@@ -16,7 +16,7 @@ public class Main {
             IToolSet basicToolSet = new ToolSetAssert(new BasicToolSet(4));
             TaskSolution basicSolution = new Solver(basicToolSet).solve(taskData);
 
-            IToolSet myToolSet = new ToolSetAssert(new MyToolSet(4));
+            IToolSet myToolSet = new ToolSetAssert(new MyToolSet(4, 0.125));
             TaskSolution mySolution = new Solver(myToolSet).solve(taskData);
 
             assert CollectionUtils.sameElements(taskData.points(), basicSolution.route());

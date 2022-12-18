@@ -4,12 +4,17 @@ import root.task.ICluster;
 import root.task.IPoint;
 import root.util.MathUtils;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyToolSet extends BasicToolSet {
-    public MyToolSet(int clusterPower) {
+    private final double selectionPart;
+
+    public MyToolSet(int clusterPower, double selectionPart) {
         super(clusterPower);
+        this.selectionPart = selectionPart;
     }
 
     @Override
@@ -35,7 +40,10 @@ public class MyToolSet extends BasicToolSet {
 
     @Override
     protected List<ICluster> doReduce(List<ICluster> clusters) {
-        double radius = (getMaxDistance(clusters) + getMinDistance(clusters)) / 2;
+        List<ICluster> selection = new LinkedList<>(clusters);
+        Collections.shuffle(selection);
+        selection = selection.stream().limit((long) Math.ceil(clusters.size() * selectionPart)).collect(Collectors.toList());
+        double radius = (getMaxDistance(selection) + getMinDistance(selection)) / 2;
         List<List<ICluster>> groups = new LinkedList<>();
 
         List<ICluster> unused = new LinkedList<>(clusters);
